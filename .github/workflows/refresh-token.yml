@@ -1,0 +1,25 @@
+name: refresh-token
+
+on:
+  # 매주 일요일. 60일 만료 훨씬 전에 계속 갱신해서 절대 안 끊기게 한다.
+  schedule:
+    - cron: "0 0 * * 0"
+  workflow_dispatch:
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - run: pip install pynacl
+
+      - name: 토큰 갱신
+        env:
+          META_TOKEN: ${{ secrets.META_TOKEN }}
+          GH_PAT: ${{ secrets.GH_PAT }}
+        run: python refresh_token.py
