@@ -113,8 +113,13 @@ def main():
     print("게시 완료:", res)
 
     DONE.mkdir(exist_ok=True)
-    folder.rename(DONE / today)
-    print("queue → published 로 옮겼습니다.")
+    dest = DONE / today
+    n = 2
+    while dest.exists():  # 같은 날 두 번 올리면 이름이 겹친다
+        dest = DONE / ("%s-%d" % (today, n))
+        n += 1
+    folder.rename(dest)
+    print("queue → %s 로 옮겼습니다." % dest.name)
 
 
 if __name__ == "__main__":
