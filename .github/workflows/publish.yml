@@ -5,6 +5,11 @@ on:
   schedule:
     - cron: "7 9 * * 0,2,5"
   workflow_dispatch:
+    inputs:
+      folder:
+        description: "즉시 올릴 폴더(예: 2026-10-13). 비우면 오늘 날짜 폴더를 올림"
+        required: false
+        default: ""
 
 permissions:
   contents: write
@@ -23,6 +28,7 @@ jobs:
         env:
           META_TOKEN: ${{ secrets.META_TOKEN }}
           IG_USER_ID: ${{ secrets.IG_USER_ID }}
+          TARGET_FOLDER: ${{ github.event.inputs.folder }}
         run: python publish.py
 
       - name: 올린 폴더 정리 커밋

@@ -66,11 +66,15 @@ def wait_ready(cid, label):
 
 def main():
     today = datetime.datetime.now(KST).strftime("%Y-%m-%d")
-    folder = QUEUE / today
+    # 수동 실행 시 특정 폴더를 지정하면 그걸 올린다(즉시발행). 없으면 오늘 날짜.
+    target = os.environ.get("TARGET_FOLDER", "").strip()
+    name = target if target else today
+    folder = QUEUE / name
 
     if not folder.is_dir():
-        print("오늘(%s) 올릴 게 없습니다. queue/%s/ 폴더를 만들어두세요." % (today, today))
+        print("올릴 폴더가 없습니다: queue/%s/ (지정: %r, 오늘: %s)" % (name, target, today))
         return
+    print("발행 대상 폴더: %s" % name)
 
     cap_file = folder / "caption.txt"
     caption = cap_file.read_text(encoding="utf-8").strip() if cap_file.exists() else ""
