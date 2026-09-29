@@ -2,15 +2,15 @@
 
 ⌨️ [Windows] 사진 속 글자만 복사 · Win + Shift + S
 ⌨️ [Windows] 말하면 글자로 입력 · Win + H
-⌨️ [Excel] 이름만 쏙 골라내기 · Ctrl + E
-⌨️ [Excel] 선택한 칸에 같은 내용 한 번에 · Ctrl + Enter
 ⌨️ [Windows] 자주 쓰는 문구 고정 · Win + V
 ⌨️ [Windows] 화면 일부 녹화 · Win + Shift + R
 ⌨️ [Chrome] 닫은 탭 다시 열기 · Ctrl + Shift + T
 ⌨️ [Chrome] 열린 탭 통째로 저장 · Ctrl + Shift + D
+⌨️ [Excel] 이름만 쏙 골라내기 · Ctrl + E
+⌨️ [Excel] 선택한 칸에 같은 내용 한 번에 · Ctrl + Enter
 
 Windows 11 · Chrome · PC용 Excel 기준이에요. 버전과 설정에 따라 다를 수 있어요.
 
-마지막 장은 단축키 요약표예요. 내일 PC 켜면 써볼 것 하나만 골라서 저장해두세요 📌
+내일 PC 켜면 써볼 것 하나만 골라서 저장해두세요 📌
 
 #직장인꿀팁 #단축키 #엑셀꿀팁 #업무효율 #윈도우꿀팁 #꿀곳간
