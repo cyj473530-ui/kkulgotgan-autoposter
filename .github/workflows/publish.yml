@@ -6,8 +6,8 @@ on:
     - cron: "7 9 * * 0,2,5"
     # 2026-09-30(수) 18:07 KST 1회 발행 (수요일이라 정기 일정 밖)
     - cron: "7 9 30 9 *"
-    # 2026-10-01(목) 08:07 KST 1회 발행 (UTC 9/30 23:07) — 이번 주 할인 (목요일이라 정기 일정 밖)
-    - cron: "7 23 30 9 *"
+    # 2026-09-30(수) 12:07 KST(UTC 03:07) 1회 발행 — 이번 주 할인(queue/2026-09-30-이번주할인)
+    - cron: "7 3 30 9 *"
   workflow_dispatch:
     inputs:
       folder:
@@ -32,7 +32,7 @@ jobs:
         env:
           META_TOKEN: ${{ secrets.META_TOKEN }}
           IG_USER_ID: ${{ secrets.IG_USER_ID }}
-          TARGET_FOLDER: ${{ github.event.inputs.folder }}
+          TARGET_FOLDER: ${{ github.event.inputs.folder || (github.event.schedule == '7 3 30 9 *' && '2026-09-30-이번주할인' || '') }}
         run: python publish.py
 
       - name: 올린 폴더 정리 커밋
