@@ -64,12 +64,29 @@ def wait_ready(cid, label):
     raise SystemExit("[%s] 2분 넘게 준비 안 됨 — 중단합니다." % label)
 
 
+def pick_folder(today, target):
+    """queue 안에서 올릴 폴더를 고른다.
+    폴더 이름은 `2026-10-13` 처럼 날짜만이어도, `2026-10-13 도라에몽명대사` 처럼 날짜 뒤에 내용이 붙어 있어도 된다.
+    - target(수동/예약 지정)이 있으면 그 이름과 같거나 그 이름으로 시작하는 폴더
+    - 없으면 오늘 날짜로 시작하는 폴더(여러 개면 이름순 첫 번째)
+    """
+    dirs = sorted((d for d in QUEUE.iterdir() if d.is_dir()), key=lambda d: d.name) if QUEUE.is_dir() else []
+    if target:
+        exact = QUEUE / target
+        if exact.is_dir():
+            return exact
+        cand = [d for d in dirs if d.name.startswith(target)]
+        return cand[0] if cand else exact
+    cand = [d for d in dirs if d.name == today or d.name.startswith(today + " ") or d.name.startswith(today + "-")]
+    return cand[0] if cand else QUEUE / today
+
+
 def main():
     today = datetime.datetime.now(KST).strftime("%Y-%m-%d")
     # 수동 실행 시 특정 폴더를 지정하면 그걸 올린다(즉시발행). 없으면 오늘 날짜.
     target = os.environ.get("TARGET_FOLDER", "").strip()
-    name = target if target else today
-    folder = QUEUE / name
+    folder = pick_folder(today, target)
+    name = folder.name
 
     if not folder.is_dir():
         print("올릴 폴더가 없습니다: queue/%s/ (지정: %r, 오늘: %s)" % (name, target, today))

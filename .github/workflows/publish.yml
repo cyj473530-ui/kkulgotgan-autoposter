@@ -6,18 +6,14 @@ on:
     - cron: "7 9 * * 0,2,5"
     # 2026-09-30(수) 18:07 KST 1회 발행 (수요일이라 정기 일정 밖)
     - cron: "7 9 30 9 *"
-    # 2026-09-30(수) 18:03 KST 1회 발행 — 이번 주 할인(queue/2026-09-30-이번주할인), 18:07 원산지 카드 직전
+    # 2026-09-30(수) 18:03 KST 1회 발행 — 이번 주 할인(queue/2026-09-30 이번주할인), 18:07 원산지 카드 직전
     - cron: "3 9 30 9 *"
   workflow_dispatch:
     inputs:
       folder:
-        description: "즉시 올릴 폴더(예: 2026-10-13). 비우면 오늘 날짜 폴더를 올림"
+        description: "즉시 올릴 폴더(예: 2026-10-13 또는 2026-10-13 도라에몽명대사). 비우면 오늘 날짜 폴더를 올림"
         required: false
         default: ""
-
-concurrency:
-  group: publish
-  cancel-in-progress: false
 
 permissions:
   contents: write
@@ -36,7 +32,7 @@ jobs:
         env:
           META_TOKEN: ${{ secrets.META_TOKEN }}
           IG_USER_ID: ${{ secrets.IG_USER_ID }}
-          TARGET_FOLDER: ${{ github.event.inputs.folder || (github.event.schedule == '3 9 30 9 *' && '2026-09-30-이번주할인' || '') }}
+          TARGET_FOLDER: ${{ github.event.inputs.folder || (github.event.schedule == '3 9 30 9 *' && '2026-09-30 이번주할인' || '') }}
         run: python publish.py
 
       - name: 올린 폴더 정리 커밋
@@ -45,4 +41,5 @@ jobs:
           git config user.email "autoposter@users.noreply.github.com"
           git add -A
           git diff --staged --quiet || git commit -m "published $(date +%F)"
+          git pull --rebase origin main || true
           git push
