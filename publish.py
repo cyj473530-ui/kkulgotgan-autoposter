@@ -133,6 +133,17 @@ def main():
     res = api(IG_ID + "/media_publish", {"creation_id": creation_id}, post=True)
     print("게시 완료:", res)
 
+    # 첫 댓글(comment.txt)이 있으면 달아서 해시태그·질문으로 노출·댓글 참여를 늘린다. 실패해도 발행은 성공으로 둔다.
+    cm_file = folder / "comment.txt"
+    if cm_file.exists() and res.get("id"):
+        cm = cm_file.read_text(encoding="utf-8").strip()
+        if cm:
+            try:
+                api(res["id"] + "/comments", {"message": cm}, post=True)
+                print("첫 댓글 등록 완료")
+            except SystemExit as e:
+                print("첫 댓글 등록 실패(발행은 정상):", str(e)[:300])
+
     DONE.mkdir(exist_ok=True)
     # 같은 날 여러 번 올리면 -1, -2, -3 ... 으로 번호를 붙인다(하루 한 번이면 날짜만).
     first = DONE / today
