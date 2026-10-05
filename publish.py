@@ -134,11 +134,17 @@ def main():
     print("게시 완료:", res)
 
     DONE.mkdir(exist_ok=True)
-    dest = DONE / today
-    n = 2
-    while dest.exists():  # 같은 날 두 번 올리면 이름이 겹친다
+    # 같은 날 여러 번 올리면 -1, -2, -3 ... 으로 번호를 붙인다(하루 한 번이면 날짜만).
+    first = DONE / today
+    if first.exists():
+        first.rename(DONE / (today + "-1"))
+    if (DONE / (today + "-1")).exists():
+        n = 2
+        while (DONE / ("%s-%d" % (today, n))).exists():
+            n += 1
         dest = DONE / ("%s-%d" % (today, n))
-        n += 1
+    else:
+        dest = first
     folder.rename(dest)
     print("queue → %s 로 옮겼습니다." % dest.name)
 

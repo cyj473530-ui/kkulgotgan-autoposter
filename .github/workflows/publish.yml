@@ -1,19 +1,23 @@
 name: publish
 
 on:
-  # KST 화·금·일 18:07 (= UTC 09:07). 정각은 깃허브 예약이 몰려서 지연되므로 07분으로 둔다.
+  # KST 일·화·금 18:07 (= UTC 09:07). 정각은 깃허브 예약이 몰려서 지연되므로 07분으로 둔다.
+  # 깃허브 예약은 가끔 늦거나 통째로 건너뛰므로(2026-10-04 실제로 건너뜀) 같은 날 백업 실행 2번을 더 둔다.
+  # 이미 올라가서 queue 폴더가 옮겨졌으면 백업은 "올릴 폴더가 없습니다"만 찍고 끝나므로 중복 게시되지 않는다.
   schedule:
     - cron: "7 9 * * 0,2,5"
-    # 2026-09-30(수) 18:07 KST 1회 발행 (수요일이라 정기 일정 밖)
-    - cron: "7 9 30 9 *"
-    # 2026-09-30(수) 18:03 KST 1회 발행 — 이번 주 할인(queue/2026-09-30 이번주할인), 18:07 원산지 카드 직전
-    - cron: "3 9 30 9 *"
+    - cron: "37 9 * * 0,2,5"
+    - cron: "7 10 * * 0,2,5"
   workflow_dispatch:
     inputs:
       folder:
         description: "즉시 올릴 폴더(예: 2026-10-13 또는 2026-10-13 도라에몽명대사). 비우면 오늘 날짜 폴더를 올림"
         required: false
         default: ""
+
+concurrency:
+  group: publish
+  cancel-in-progress: false
 
 permissions:
   contents: write
@@ -32,7 +36,7 @@ jobs:
         env:
           META_TOKEN: ${{ secrets.META_TOKEN }}
           IG_USER_ID: ${{ secrets.IG_USER_ID }}
-          TARGET_FOLDER: ${{ github.event.inputs.folder || (github.event.schedule == '3 9 30 9 *' && '2026-09-30 이번주할인' || '') }}
+          TARGET_FOLDER: ${{ github.event.inputs.folder }}
         run: python publish.py
 
       - name: 올린 폴더 정리 커밋
