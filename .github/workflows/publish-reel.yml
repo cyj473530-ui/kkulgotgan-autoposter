@@ -1,6 +1,6 @@
 name: publish-reel
 
-# 릴스는 예약 없이 수동으로만 올린다. reels/<폴더>/ 에 reel.mp4 · cover.jpg · caption.txt 를 넣고 실행.
+# 릴스는 예약 없이 수동으로만 올린다. 릴스업로드대기/<폴더>/ 에 reel.mp4 · cover.jpg · caption.txt 를 넣고 실행.
 on:
   workflow_dispatch:
     inputs:
@@ -36,7 +36,7 @@ jobs:
         run: |
           git config user.name  "autoposter"
           git config user.email "autoposter@users.noreply.github.com"
-          git add -A reels published-reels
+          git add -A
           git diff --staged --quiet || git commit -m "published reel $(date +%F)"
           git pull --rebase origin main || true
           git push

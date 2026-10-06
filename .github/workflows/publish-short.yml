@@ -1,6 +1,6 @@
 name: publish-short
 
-# 유튜브 쇼츠는 예약 없이 수동으로만 올린다. 릴스 폴더(reels/ 또는 published-reels/)의 reel.mp4 를 그대로 쓴다.
+# 유튜브 쇼츠는 예약 없이 수동으로만 올린다. 릴스 폴더(릴스업로드대기/ 또는 릴스업로드완료/)의 reel.mp4 를 그대로 쓴다.
 on:
   workflow_dispatch:
     inputs:
@@ -42,7 +42,7 @@ jobs:
         run: |
           git config user.name  "autoposter"
           git config user.email "autoposter@users.noreply.github.com"
-          git add -A reels published-reels
+          git add -A
           git diff --staged --quiet || git commit -m "uploaded short $(date +%F)"
           git pull --rebase origin main || true
           git push

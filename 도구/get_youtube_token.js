@@ -1,10 +1,10 @@
 // 꿀곳간 유튜브 리프레시 토큰 받기 — 처음 한 번만 내 컴퓨터에서 실행한다.
 //
 // 1) 구글 클라우드에서 받은 OAuth 클라이언트(데스크톱 앱) JSON 을
-//    _youtube_local/client_secret.json 으로 저장 (이 폴더는 깃에 안 올라감)
-// 2) node tools/get_youtube_token.js
+//    유튜브인증/client_secret.json 으로 저장 (이 폴더는 깃에 안 올라감)
+// 2) node 도구/get_youtube_token.js
 // 3) 브라우저가 열리면 @kkulgotgan 채널 계정(cyj473530@gmail.com)으로 허용
-// 4) _youtube_local/github_secrets.txt 에 시크릿 3개가 저장됨 → 깃허브 Secrets 에 직접 붙여넣기
+// 4) 유튜브인증/github_secrets.txt 에 시크릿 3개가 저장됨 → 깃허브 Secrets 에 직접 붙여넣기
 //
 // 값은 화면에 출력하지 않는다. 채팅에도 붙이지 말 것.
 
@@ -14,7 +14,7 @@ const http = require("http");
 const https = require("https");
 const { exec } = require("child_process");
 
-const DIR = path.join(__dirname, "..", "_youtube_local");
+const DIR = path.join(__dirname, "..", "유튜브인증");
 const raw = JSON.parse(fs.readFileSync(path.join(DIR, "client_secret.json"), "utf8"));
 const c = raw.installed || raw.web;
 const SCOPE = "https://www.googleapis.com/auth/youtube.upload";
@@ -48,7 +48,7 @@ const server = http.createServer(async (req, res) => {
       "YT_CLIENT_ID\n" + c.client_id + "\n\nYT_CLIENT_SECRET\n" + c.client_secret +
       "\n\nYT_REFRESH_TOKEN\n" + tok.refresh_token + "\n", "utf8");
     res.end("완료! 이 창은 닫아도 됩니다.");
-    console.log("완료 → _youtube_local/github_secrets.txt 저장됨 (값은 출력하지 않음)");
+    console.log("완료 → 유튜브인증/github_secrets.txt 저장됨 (값은 출력하지 않음)");
   }
   server.close();
 });

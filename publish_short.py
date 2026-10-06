@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """꿀곳간 유튜브 쇼츠 업로드 — 릴스 폴더의 reel.mp4 를 유튜브 @kkulgotgan 에 올린다.
 
-- 릴스와 같은 폴더를 그대로 쓴다. reels/<폴더>/ 또는 published-reels/<폴더>/ 에서 찾는다.
+- 릴스와 같은 폴더를 그대로 쓴다. 릴스업로드대기/<폴더>/ 또는 릴스업로드완료/<폴더>/ 에서 찾는다.
 - 제목: yt_title.txt 가 있으면 그것, 없으면 caption.txt 첫 줄 (100자 제한)
 - 설명: yt_description.txt 가 있으면 그것, 없으면 caption.txt 전체 + #Shorts
 - 올리고 나면 폴더에 youtube.txt(영상 주소)를 남긴다. 이게 있으면 다시 안 올린다(재실행 중복 방지).
@@ -18,7 +18,7 @@ import urllib.request
 import urllib.error
 
 ROOT = pathlib.Path(__file__).parent
-SEARCH = [ROOT / "reels", ROOT / "published-reels"]
+SEARCH = [ROOT / "릴스업로드대기", ROOT / "릴스업로드완료"]
 PRIVACY = os.environ.get("YT_PRIVACY", "").strip() or "public"
 
 
@@ -55,7 +55,7 @@ def find_folder(target):
         cand = sorted(d for d in base.iterdir() if d.is_dir() and d.name.startswith(target))
         if cand:
             return cand[0]
-    raise SystemExit("폴더가 없습니다: reels/ · published-reels/ 아래 %s" % target)
+    raise SystemExit("폴더가 없습니다: 릴스업로드대기/ · 릴스업로드완료/ 아래 %s" % target)
 
 
 def read(p):

@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""꿀곳간 릴스 발행 — reels/<폴더>/ 의 reel.mp4 + cover.jpg + caption.txt 를 릴스로 올린다.
+"""꿀곳간 릴스 발행 — 릴스업로드대기/<폴더>/ 의 reel.mp4 + cover.jpg + caption.txt 를 릴스로 올린다.
 
 - 캐러셀 자동발행(publish.py)과 완전히 분리. 수동 실행(publish-reel 워크플로)으로만 돈다.
 - 인스타 음악 라이브러리 곡은 API로 붙일 수 없다. 영상에 들어 있는 소리(나레이션·효과음)만 나간다.
@@ -11,8 +11,8 @@ import pathlib
 
 from publish import api, raw_url, ROOT, IG_ID
 
-REELS = ROOT / "reels"
-DONE = ROOT / "published-reels"
+REELS = ROOT / "릴스업로드대기"
+DONE = ROOT / "릴스업로드완료"
 
 
 def wait_video(cid):
@@ -38,9 +38,9 @@ def main():
     if not folder.is_dir():
         cand = sorted(d for d in REELS.iterdir() if d.is_dir() and d.name.startswith(target))
         if not cand:
-            raise SystemExit("폴더가 없습니다: reels/%s/" % target)
+            raise SystemExit("폴더가 없습니다: 릴스업로드대기/%s/" % target)
         folder = cand[0]
-    print("발행 대상: reels/%s/" % folder.name)
+    print("발행 대상: 릴스업로드대기/%s/" % folder.name)
 
     video = folder / "reel.mp4"
     if not video.exists():
@@ -82,7 +82,7 @@ def main():
         dest = DONE / ("%s-%d" % (folder.name, n))
         n += 1
     folder.rename(dest)
-    print("reels → %s 로 옮겼습니다." % dest.relative_to(ROOT))
+    print("릴스업로드대기 → %s 로 옮겼습니다." % dest.relative_to(ROOT))
 
 
 if __name__ == "__main__":

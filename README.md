@@ -1,14 +1,14 @@
 # 꿀곳간 오토포스터
 
 [@kkulgotgan](https://www.instagram.com/kkulgotgan/) 자동 발행.
-`queue/`에 날짜 폴더를 쌓아두면 **화·금 18:07(KST)에 컴퓨터가 꺼져 있어도** 올라간다.
+`업로드대기/`에 날짜 폴더를 쌓아두면 **화·금 18:07(KST)에 컴퓨터가 꺼져 있어도** 올라간다.
 
 ## 구조
 
 ```
-queue/2026-09-29/  →  publish.py  →  Instagram API  →  게시
+업로드대기/2026-09-29/  →  publish.py  →  Instagram API  →  게시
                                           ↓
-                                    published/2026-09-29/
+                                    업로드완료/2026-09-29/
 ```
 
 ## 시크릿 3개 (Settings → Secrets and variables → Actions)
@@ -27,10 +27,10 @@ queue/2026-09-29/  →  publish.py  →  Instagram API  →  게시
 ## 유튜브 쇼츠 ([@kkulgotgan](https://www.youtube.com/@kkulgotgan))
 
 - **publish-short** — 수동 실행. 입력 `folder`에 릴스 폴더 이름(예: `2026-10-06 청년미래적금`)
-- 릴스 폴더(`reels/` 또는 `published-reels/`)의 `reel.mp4`를 그대로 올린다. 영상을 따로 둘 필요 없음
+- 릴스 폴더(`릴스업로드대기/` 또는 `릴스업로드완료/`)의 `reel.mp4`를 그대로 올린다. 영상을 따로 둘 필요 없음
 - 제목 `yt_title.txt`, 설명 `yt_description.txt` (없으면 `caption.txt` 사용)
 - 올리면 폴더에 `youtube.txt`(영상 주소)가 생긴다. **이게 있으면 다시 안 올라감** → 재실행해도 중복 없음
-- 시크릿 3개 추가: `YT_CLIENT_ID` `YT_CLIENT_SECRET` `YT_REFRESH_TOKEN` (`tools/get_youtube_token.js`로 발급)
+- 시크릿 3개 추가: `YT_CLIENT_ID` `YT_CLIENT_SECRET` `YT_REFRESH_TOKEN` (`도구/get_youtube_token.js`로 발급)
 - 구글 심사 전에는 업로드 영상이 **비공개로 잠김** → 스튜디오에서 직접 공개 전환
 
 ## 확인하는 법
