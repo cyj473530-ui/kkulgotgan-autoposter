@@ -1,14 +1,14 @@
 # 꿀곳간 오토포스터
 
 [@kkulgotgan](https://www.instagram.com/kkulgotgan/) 자동 발행.
-`업로드대기/`에 날짜 폴더를 쌓아두면 **화·금 18:07(KST)에 컴퓨터가 꺼져 있어도** 올라간다.
+`발행전/`에 날짜 폴더를 쌓아두면 **화·금 18:07(KST)에 컴퓨터가 꺼져 있어도** 올라간다.
 
 ## 구조
 
 ```
-업로드대기/2026-09-29/  →  publish.py  →  Instagram API  →  게시
+발행전/2026-09-29/  →  publish.py  →  Instagram API  →  게시
                                           ↓
-                                    업로드완료/2026-09-29/
+                                    발행완료/2026-09-29/
 ```
 
 ## 시크릿 3개 (Settings → Secrets and variables → Actions)

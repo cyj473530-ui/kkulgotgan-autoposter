@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""꿀곳간 자동 발행 — 업로드대기/<오늘날짜>/ 폴더를 캐러셀로 인스타에 올린다."""
+"""꿀곳간 자동 발행 — 발행전/<오늘날짜>/ 폴더를 캐러셀로 인스타에 올린다."""
 
 import os
 import sys
@@ -18,8 +18,8 @@ REPO = os.environ["GITHUB_REPOSITORY"]
 BRANCH = os.environ.get("GITHUB_REF_NAME", "main")
 
 ROOT = pathlib.Path(__file__).parent
-QUEUE = ROOT / "업로드대기"
-DONE = ROOT / "업로드완료"
+QUEUE = ROOT / "발행전"
+DONE = ROOT / "발행완료"
 KST = datetime.timezone(datetime.timedelta(hours=9))
 IMG_EXT = {".png", ".jpg", ".jpeg"}
 MAX_ITEMS = 10
@@ -65,7 +65,7 @@ def wait_ready(cid, label):
 
 
 def pick_folder(today, target):
-    """업로드대기 안에서 올릴 폴더를 고른다.
+    """발행전 안에서 올릴 폴더를 고른다.
     폴더 이름은 `2026-10-13` 처럼 날짜만이어도, `2026-10-13 도라에몽명대사` 처럼 날짜 뒤에 내용이 붙어 있어도 된다.
     - target(수동/예약 지정)이 있으면 그 이름과 같거나 그 이름으로 시작하는 폴더
     - 없으면 오늘 날짜로 시작하는 폴더(여러 개면 이름순 첫 번째)
@@ -89,7 +89,7 @@ def main():
     name = folder.name
 
     if not folder.is_dir():
-        print("올릴 폴더가 없습니다: 업로드대기/%s/ (지정: %r, 오늘: %s)" % (name, target, today))
+        print("올릴 폴더가 없습니다: 발행전/%s/ (지정: %r, 오늘: %s)" % (name, target, today))
         return
     print("발행 대상 폴더: %s" % name)
 
@@ -157,7 +157,7 @@ def main():
     else:
         dest = first
     folder.rename(dest)
-    print("업로드대기 → %s 로 옮겼습니다." % dest.name)
+    print("발행전 → %s 로 옮겼습니다." % dest.name)
 
 
 if __name__ == "__main__":
