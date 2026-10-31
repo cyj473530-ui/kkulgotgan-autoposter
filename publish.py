@@ -78,7 +78,19 @@ def pick_folder(today, target):
         cand = [d for d in dirs if d.name.startswith(target)]
         return cand[0] if cand else exact
     cand = [d for d in dirs if d.name == today or d.name.startswith(today + " ") or d.name.startswith(today + "-")]
-    return cand[0] if cand else QUEUE / today
+    if cand:
+        return cand[0]
+    # 깃허브 예약이 몇 시간씩 밀려 자정을 넘기면(2026-10-30 실제 발생) '오늘'이 이미 다음 날이라 폴더를 못 찾는다.
+    # → 날짜가 지났지만 3일 안인 폴더 중 가장 오래된 것 하나를 대신 올린다(한 번에 하나). 미래 날짜 폴더는 건드리지 않는다.
+    t = datetime.date.fromisoformat(today)
+    for d in dirs:
+        try:
+            dd = datetime.date.fromisoformat(d.name[:10])
+        except ValueError:
+            continue
+        if 0 < (t - dd).days <= 3:
+            return d
+    return QUEUE / today
 
 
 def main():
