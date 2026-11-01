@@ -35,6 +35,10 @@ def main():
     if not target:
         raise SystemExit("올릴 릴스 폴더 이름을 지정해야 합니다 (예: 2026-10-06 청년미래적금).")
     folder = REELS / target
+    if not folder.is_dir() and (DONE / target).is_dir():
+        # 예약 워크플로는 cron을 여러 번 건다(안 도는 경우 대비). 앞 실행이 이미 올렸으면 조용히 끝낸다.
+        print("이미 발행됨(릴스업로드완료/%s/) — 건너뜁니다." % target)
+        return
     if not folder.is_dir():
         cand = sorted(d for d in REELS.iterdir() if d.is_dir() and d.name.startswith(target))
         if not cand:
