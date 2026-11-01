@@ -8,6 +8,14 @@ on:
     - cron: "7 9 * * 0,2,5"
     - cron: "37 9 * * 0,2,5"
     - cron: "7 10 * * 0,2,5"
+    # 깃허브 예약은 늦거나 통째로 빠진다(2026-10-30·11-01 실제 발생). 같은 날 저녁에 한 시간 간격으로 더 걸어 둔다.
+    # 이미 올라간 날은 "올릴 폴더가 없습니다"만 찍고 끝나므로 중복 게시되지 않는다.
+    - cron: "7 11 * * 0,2,5"
+    - cron: "7 12 * * 0,2,5"
+    - cron: "7 13 * * 0,2,5"
+    - cron: "7 14 * * 0,2,5"
+    # 매일 낮 12:07(KST)에도 한 번: 어제까지 못 나간 폴더(3일 안)를 publish.py가 대신 올린다.
+    - cron: "7 3 * * *"
   workflow_dispatch:
     inputs:
       folder:
@@ -37,6 +45,7 @@ jobs:
           META_TOKEN: ${{ secrets.META_TOKEN }}
           IG_USER_ID: ${{ secrets.IG_USER_ID }}
           TARGET_FOLDER: ${{ github.event.inputs.folder }}
+          CATCHUP_ONLY: ${{ github.event.schedule == '7 3 * * *' }}
         run: python publish.py
 
       - name: 올린 폴더 정리 커밋
